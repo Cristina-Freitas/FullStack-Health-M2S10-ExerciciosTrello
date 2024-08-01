@@ -5,10 +5,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
-public class MedicoDTO {
+public class MedicoResponse {
+
+    private Long id;
     @NotBlank(message = "O nome do médico não pode estar em branco")
     private String nome;
     private String crm;
@@ -18,6 +21,14 @@ public class MedicoDTO {
     private LocalDate dataNascimento;
     private String telefone;
     private EspecialidadeEnum especialidade;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getNome() {
         return nome;
