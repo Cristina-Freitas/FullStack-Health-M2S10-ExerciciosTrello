@@ -1,10 +1,14 @@
 package br.senai.lab365.medicos.controllers;
 
+import br.senai.lab365.medicos.dto.MedicoListRequest;
+import br.senai.lab365.medicos.dto.MedicoListResponse;
 import br.senai.lab365.medicos.dto.MedicoRequest;
 import br.senai.lab365.medicos.dto.MedicoResponse;
 import br.senai.lab365.medicos.models.Medico;
 import br.senai.lab365.medicos.services.MedicoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,4 +35,15 @@ public class MedicoController {
             return ResponseEntity.notFound().build();
         }
     }
+
+   @GetMapping
+   public ResponseEntity<Page<MedicoListResponse>> listarMedicos(
+       MedicoListRequest filtros, Pageable pageable) {
+        return ResponseEntity.ok(medicoService.listarMedicos(filtros, pageable));
+   }
+
+
+
+
+
 }

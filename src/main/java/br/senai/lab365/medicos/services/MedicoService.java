@@ -1,14 +1,19 @@
 package br.senai.lab365.medicos.services;
 
+import br.senai.lab365.medicos.dto.MedicoListRequest;
+import br.senai.lab365.medicos.dto.MedicoListResponse;
 import br.senai.lab365.medicos.dto.MedicoRequest;
 import br.senai.lab365.medicos.dto.MedicoResponse;
+import br.senai.lab365.medicos.enums.EspecialidadeEnum;
 import br.senai.lab365.medicos.models.Medico;
 import br.senai.lab365.medicos.repositories.MedicoRepository;
-import jakarta.persistence.EntityExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
+import java.time.LocalDate;
 import java.util.Optional;
+import static br.senai.lab365.medicos.mappers.MedicoMapper.map;
 
 @Service
 public class MedicoService {
@@ -57,4 +62,24 @@ public class MedicoService {
         }
     }
 
+    public Page<MedicoListResponse> listarMedicos(MedicoListRequest filtros, Pageable pageable) {
+        String nome = filtros.getNome() != null ? filtros.getNome() : "";
+        LocalDate dataNascimento = filtros.getDataNascimento();
+        EspecialidadeEnum especialidade = filtros.getEspecialidade();
+
+        if (filtros.getDataNascimento() != null && filtros.getEspecialidade() != null && filtros.getNome() != null) {
+            return map(medicoRepository.findByNomeContainingIgnoreCaseAndEspecialidadeAndDataNascimento(
+                    nome, especialidade, dataNascimento, pageable));
+        } else if (filtros.getEspecialidade() != null) {
+            return map(medicoRepository.findByNomeContainingIgnoreCaseAndEspecialidade(
+                    nome, especialidade, pageable));
+        } else if (filtros.getDataNascimento() != null) {
+            return map(medicoRepository.findByNomeContainingIgnoreCaseAndDataNascimento(
+                    nome, dataNascimento, pageable));
+        } else {
+            return map(medicoRepository.findByNomeContainingIgnoreCase(
+                    nome, pageable));
+        }
+
+    }
 }

@@ -2,7 +2,6 @@ package br.senai.lab365.medicos.models;
 
 import br.senai.lab365.medicos.enums.EspecialidadeEnum;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 
 @Entity

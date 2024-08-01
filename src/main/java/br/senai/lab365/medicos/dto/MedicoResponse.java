@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import jakarta.validation.constraints.NotBlank;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.time.LocalDate;
 
 public class MedicoResponse {
@@ -21,6 +19,17 @@ public class MedicoResponse {
     private LocalDate dataNascimento;
     private String telefone;
     private EspecialidadeEnum especialidade;
+
+    public MedicoResponse() {
+    }
+
+    public MedicoResponse(String nome, String crm, LocalDate dataNascimento, String telefone, EspecialidadeEnum especialidade) {
+        this.nome = nome;
+        this.crm = crm;
+        this.dataNascimento = dataNascimento;
+        this.telefone = telefone;
+        this.especialidade = especialidade;
+    }
 
     public Long getId() {
         return id;

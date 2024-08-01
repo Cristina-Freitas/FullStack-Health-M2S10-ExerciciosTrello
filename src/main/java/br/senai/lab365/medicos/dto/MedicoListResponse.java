@@ -4,28 +4,26 @@ import br.senai.lab365.medicos.enums.EspecialidadeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
-public class MedicoRequest {
-   // private Long id;
-    @NotBlank(message = "O nome do médico não pode estar em branco")
+public class MedicoListResponse {
+
     private String nome;
-    private String crm;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataNascimento;
-    private String telefone;
+
     private EspecialidadeEnum especialidade;
 
-  /* public Long getId() {
-        return id;
-   }
+    public MedicoListResponse() {
+    }
 
-   public void setId(Long id) {
-     this.id = id;
-   }*/
+    public MedicoListResponse(String nome, EspecialidadeEnum especialidade, LocalDate dataNascimento) {
+        this.nome = nome;
+        this.especialidade = especialidade;
+        this.dataNascimento = dataNascimento;
+    }
 
     public String getNome() {
         return nome;
@@ -33,14 +31,6 @@ public class MedicoRequest {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getCrm() {
-        return crm;
-    }
-
-    public void setCrm(String crm) {
-        this.crm = crm;
     }
 
     public LocalDate getDataNascimento() {
@@ -51,19 +41,20 @@ public class MedicoRequest {
         this.dataNascimento = dataNascimento;
     }
 
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
     public EspecialidadeEnum getEspecialidade() {
         return especialidade;
     }
 
     public void setEspecialidade(EspecialidadeEnum especialidade) {
         this.especialidade = especialidade;
+    }
+
+    @Override
+    public String toString() {
+        return "MedicoListResponse{" +
+                "nome='" + nome + '\'' +
+                ", dataNascimento=" + dataNascimento +
+                ", especialidade=" + especialidade +
+                '}';
     }
 }
