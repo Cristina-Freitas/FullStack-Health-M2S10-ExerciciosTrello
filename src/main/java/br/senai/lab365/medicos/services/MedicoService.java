@@ -7,6 +7,7 @@ import br.senai.lab365.medicos.dto.MedicoResponse;
 import br.senai.lab365.medicos.enums.EspecialidadeEnum;
 import br.senai.lab365.medicos.models.Medico;
 import br.senai.lab365.medicos.repositories.MedicoRepository;
+import jakarta.persistence.EntityExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.Optional;
 import static br.senai.lab365.medicos.mappers.MedicoMapper.map;
+import static br.senai.lab365.medicos.mappers.MedicoMapper.mapResponse;
 
 @Service
 public class MedicoService {
@@ -81,5 +83,11 @@ public class MedicoService {
                     nome, pageable));
         }
 
+    }
+
+    public MedicoResponse buscarPorId(Long id) {
+            Medico medico = medicoRepository.findById(id)
+                                            .orElseThrow(EntityExistsException::new);
+            return mapResponse(medico);
     }
 }

@@ -42,6 +42,12 @@ public class MedicoController {
         return ResponseEntity.ok(medicoService.listarMedicos(filtros, pageable));
    }
 
+    @GetMapping("/{id}")
+    public MedicoResponse buscarPorId(@PathVariable Long id) {
+
+        return medicoService.buscarPorId(id);
+    }
+
 
 
 
