@@ -48,7 +48,10 @@ public class MedicoController {
         return medicoService.buscarPorId(id);
     }
 
-
+    @DeleteMapping("/{id}")
+    public void deletar(@PathVariable Long id){
+        medicoService.deletar(id);
+    }
 
 
 

@@ -90,4 +90,8 @@ public class MedicoService {
                                             .orElseThrow(EntityExistsException::new);
             return mapResponse(medico);
     }
+
+    public void deletar(Long id) {
+        medicoRepository.deleteById(id);
+    }
 }
