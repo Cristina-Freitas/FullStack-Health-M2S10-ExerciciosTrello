@@ -26,4 +26,6 @@ public interface MedicoRepository extends JpaRepository<Medico, Long>{
     Page<Medico> findByNomeContainingIgnoreCaseAndEspecialidadeAndDataNascimento(
             String nome, EspecialidadeEnum especialidade, LocalDate dataNascimento, Pageable pageable
     );
+
+    boolean existsByCrm(String crm);
 }

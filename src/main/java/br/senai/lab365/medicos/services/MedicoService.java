@@ -8,7 +8,9 @@ import br.senai.lab365.medicos.enums.EspecialidadeEnum;
 import br.senai.lab365.medicos.models.Medico;
 import br.senai.lab365.medicos.repositories.MedicoRepository;
 import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,9 @@ public class MedicoService {
     private MedicoRepository medicoRepository;
 
     public Medico cadastrar(MedicoRequest medicoRequest) {
+        if (medicoRepository.existsByCrm(medicoRequest.getCrm())) {
+            throw new DuplicateKeyException("CRM já cadastrado");
+        }
         Medico medico = new Medico(
                 medicoRequest.getNome(),
                 medicoRequest.getCrm(),
@@ -41,13 +46,12 @@ public class MedicoService {
             Medico medico = medicoExistente.get();
             // Atualiza os campos do médico existente com as informações do request
             medico.setNome(medicoRequest.getNome());
-            medico.setCrm(medicoRequest.getCrm());
+            //medico.setCrm(medicoRequest.getCrm());
             medico.setDataNascimento(medicoRequest.getDataNascimento());
             medico.setTelefone(medicoRequest.getTelefone());
             medico.setEspecialidade(medicoRequest.getEspecialidade());
 
-            // Salva o médico atualizado
-            medico = medicoRepository.save(medico);
+            medico = medicoRepository.save(medico); // Salva o médico atualizado
 
             // Cria e retorne o DTO de resposta
             MedicoResponse response = new MedicoResponse();
@@ -58,9 +62,9 @@ public class MedicoService {
             response.setTelefone(medico.getTelefone());
             response.setEspecialidade(medico.getEspecialidade());
 
-            return response;
+            return mapResponse(medico);
         } else {
-            return null;
+            throw new EntityNotFoundException("Médico não encontrado");
         }
     }
 
@@ -82,16 +86,21 @@ public class MedicoService {
             return map(medicoRepository.findByNomeContainingIgnoreCase(
                     nome, pageable));
         }
-
     }
 
     public MedicoResponse buscarPorId(Long id) {
             Medico medico = medicoRepository.findById(id)
-                                            .orElseThrow(EntityExistsException::new);
+                    .orElseThrow(() -> new EntityNotFoundException("Médico não encontrado"));
+                                           // .orElseThrow(EntityExistsException::new);
             return mapResponse(medico);
     }
 
     public void deletar(Long id) {
+        if (medicoRepository.existsById(id)) {
+            medicoRepository.deleteById(id);
+        } else {
+            throw new EntityNotFoundException("Médico não encontrado");
+        }
         medicoRepository.deleteById(id);
     }
 }

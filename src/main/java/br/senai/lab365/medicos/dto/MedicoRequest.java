@@ -5,12 +5,17 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 
 public class MedicoRequest {
    // private Long id;
-    @NotBlank(message = "O nome do médico não pode estar em branco")
+    //@NotBlank(message = "O nome do médico não pode estar em branco!")
+    @NotNull(message = "O nome do médico não pode ser nulo!")
     private String nome;
+
+    @NotNull(message = "CRM já cadastrado!")
     private String crm;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)

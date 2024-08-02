@@ -2,6 +2,8 @@ package br.senai.lab365.medicos.models;
 
 import br.senai.lab365.medicos.enums.EspecialidadeEnum;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+
 import java.time.LocalDate;
 
 @Entity
@@ -11,12 +13,14 @@ public class Medico{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_medico")
     private Long id;
+
+    @NotBlank(message = "Nome é obrigatório!")
     @Column(nullable = false)
-
     private String nome;
-    @Column(nullable = false, unique = true)
 
+    @Column(nullable = false, unique = true)
     private String crm;
+
     @Column(nullable = false)
     private LocalDate dataNascimento;
 

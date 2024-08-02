@@ -6,6 +6,7 @@ import br.senai.lab365.medicos.dto.MedicoRequest;
 import br.senai.lab365.medicos.dto.MedicoResponse;
 import br.senai.lab365.medicos.models.Medico;
 import br.senai.lab365.medicos.services.MedicoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +22,8 @@ public class MedicoController {
     private MedicoService medicoService;
 
     @PostMapping
-    public Medico cadastrar(@RequestBody MedicoRequest medicoRequest) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public Medico cadastrar(@Valid @RequestBody MedicoRequest medicoRequest) {
         return medicoService.cadastrar(medicoRequest);
     }
 
@@ -43,12 +45,14 @@ public class MedicoController {
    }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public MedicoResponse buscarPorId(@PathVariable Long id) {
 
         return medicoService.buscarPorId(id);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletar(@PathVariable Long id){
         medicoService.deletar(id);
     }
